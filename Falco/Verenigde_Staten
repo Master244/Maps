@@ -1,0 +1,48 @@
+import networkx as nx 
+import matplotlib.pyplot as plt
+
+gr = nx.Graph()
+
+countries = ['bri', 'war', 'mck', 'pot', 'tio', 'bra', 'sus', 'way', 'cra', 'mer', 'ver', 'for', 'bk', 'came', 'cli', 'lyc', 'sul', 'wyo', 'lac', 'pik', 'law', 'but', 'cla', 'jef', 'cle', 'cen', 'uri', 'noru', 'mont', 'col', 'luz', 'monr', 'bea', 'all', 'arm', 'ind', 'cam', 'bla', 'hun', 'mif', 'sny', 'sch', 'car', 'nora', 'was', 'wes', 'jur', 'dau', 'leb', 'ber', 'leh', 'gre', 'fay', 'som', 'bec', 'ful', 'fra', 'per', 'cum', 'ada', 'yor', 'lan', 'che', 'mon', 'buc', 'phi', 'del']
+
+position = [(1,8.5),(2.5,8),(4,8),(5,8),(6.5,8),(8,8),(9.5,8),(10.5,7),(1,7),(1,5.5),(2,5.5),(3,5.5),(4,5.5),(4.5,5.5),(6,5),(7,5.5),(8,6),(9,6),(9.5,6),(11.5,6),(1,4.5),(2.5,4.5),(3,4.5),(3.5,3.75),(4,4),(5,4),(6,4),(6.5,3.5),(7,4),(7.5,4),(8.5,4.5),(10,4.5),(1,3.5),(2,3),(3,4),(3.75,3),(4,3),(4.5,3),(5,3),(5.5,3.5),(6,3.5),(8,3.5),(9,4),(10,3.5),(1,2),(3,2),(5.5,3),(6.5,2.5),(7,2.5),(8,2.5),(9,3),(1,1),(2.5,1),(3.5,1),(4.5,1),(5,1),(5.5,1),(5.5,2.5),(6,2),(6,1),(7,1),(7.5,1),(8,1),(9,1.5),(10,2),(9.5,1),(9,1)]
+
+nodes = ['bri', 'war', 'mck', 'pot', 'tio', 'bra', 'sus', 'way', 'cra', 'mer', 'ver', 'for', 'bk', 'came', 'cli', 'lyc', 'sul', 'wyo', 'lac', 'pik', 'law', 'but', 'cla', 'jef', 'cle', 'cen', 'uri', 'noru', 'mont', 'col', 'luz', 'monr', 'bea', 'all', 'arm', 'ind', 'cam', 'bla', 'hun', 'mif', 'sny', 'sch', 'car', 'nora', 'was', 'wes', 'jur', 'dau', 'leb', 'ber', 'leh', 'gre', 'fay', 'som', 'bec', 'ful', 'fra', 'per', 'cum', 'ada', 'yor', 'lan', 'che', 'mon', 'buc', 'phi', 'del']
+
+labels = dict(zip(countries, nodes))
+
+print len(position), len(countries)
+
+pos = dict(zip(countries, position))
+
+print pos
+
+neighbours = [('bri','cra'),('bri','war'),('war','cra'),('war','ver'),('war','for'),('war','mck'),('mck','bk'),('mck','came'),('mck', 'pot'),
+('pot','came'),('pot','cli'),('pot','lyc'),('pot','tio'),('tio','lyc'),('tio','bra'),('bra','sul'),('bra','wyo'),('bra','sus'),('sus','wyo'),
+('sus','lac'),('sus','way'),('way','lac'),('way','monr'),('way','pik'),('cra','mer'),('cra','ver'),('mer','ver'),('mer','but'),('mer','law'),
+('ver','but'),('ver','cla'),('ver','for'),('for','cla'),('for','jef'),('for','bk'),('bk','jef'),('bk','cle'),('bk','came'),('came','cle'),
+('came','cli'),('cli','cle'),('cli','cen'),('cli','uri'),('cli','lyc'),('lyc','uri'),('lyc','noru'),('lyc','mont'),('lyc','col'),('lyc','sul'),
+('sul','col'),('sul','luz'),('sul','wyo'),('wyo','luz'),('wyo','lac'),('lac','luz'),('lac','monr'),('pik','monr'),('law','bea'),('law','but'),
+('but','bea'),('but','all'),('but','arm'),('but','cla'),('cla','arm'),('cla','jef'),('jef','arm'),('jef','ind'),('jef','cle'),('cle','ind'),
+('cle','cam'),('cle','cen'),('cen','bla'),('cen','hun'),('cen','mif'),('cen','uri'),('uri','sny'),('uri','noru'),('noru','sny'),('noru','jur'),
+('noru','dau'),('noru','sch'),('noru','col'),('noru','mont'),('mont','col'),('col','sch'),('col', 'luz'),('luz','sch'),('luz','car'),
+('luz','monr'),('monr','car'),('monr','nora'),('bea','all'),('bea','was'),('all','was'),('all','wes'),('wes','was'),('wes','fay'),('wes','som'),
+('wes','cam'),('wes','ind'),('wes','arm'),('arm','ind'),('ind','cam'),('cam','som'),('cam','bec'),('cam','bla'),('bla','bec'),('bla','hun'),
+('hun','bec'), ('hun','ful'),('hun','fra'), ('hun','jur'),('hun','mif'), ('mif','jur'),('mif','sny'),('jur','fra'),('jur','per'),('jur','sny'),('per','fra'),('per','cum'),('per','dau'),('dau','cum'),('dau','yor'),('dau','lan'),('dau','leb'),('dau','sch'),('leb','lan'),('leb','ber'),
+('leb','sch'),('sch','ber'),('sch','leh'),('sch','car'),('car','leh'),('car','nora'),('nora','leh'),('nora','buc'),('was','gre'),('was','fay'),
+('fay','gre'),('fay','som'),('som','bec'),('bec','ful'),('ful','fra'),('fra','ada'),('fra','cum'),('cum','ada'),('cum','yor'),('ada','yor'),
+('yor','lan'),('lan','ber'),('lan','che'),('ber','leh'),('ber','mon'),('ber','che'),('leh','mon'),('leh','buc'),('buc','mon'),('buc','phi'),
+('che','mon'),('che','del'),('mon','phi'),('mon','del'),('del','phi')]
+
+gr.add_nodes_from(countries)
+gr.add_edges_from(neighbours)
+
+
+
+nx.draw(gr,pos)
+#nx.draw_networkx_labels(gr,pos,labels)
+plt.savefig("simple_path.png") # save as png
+plt.show() # display
+
+print countries[:10]
+
