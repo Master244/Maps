@@ -1,5 +1,6 @@
 import networkx as nx 
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 gr = nx.Graph()
 
@@ -20,15 +21,17 @@ nodes = ['leo', 'zam', 'jae', 'bur', 'gui', 'mur', 'gua', 'vall', 'ast',
 'ger', 'mad', 'vale', 'viz', 'ala', 'alm', 'bal', 'las', 'san', 'cor', 'cac',
 'alb', 'zar', 'cas']
 
-labels = dict(zip(counties, nodes))
+colors = ['b','g','r','y', '#660099', '#AA8899', '#DD4477', '#0000AA', '#222222']
+count = 0
+for node in nodes:
+	gr.add_node(node, name = counties[count], color = colors[0])
+	count += 1
 
-print len(position), len(counties)
 
 pos = dict(zip(counties, position))
 
-print pos['pon']
 
-neighbours = [('leo','zam'),('leo','jae'),('zam','jae'),('zam','bur'),('bur','jae'),('jae','gui'),('bur','mur'),('jae','mur'),('gui', 'mur'),
+edges = [('leo','zam'),('leo','jae'),('zam','jae'),('zam','bur'),('bur','jae'),('jae','gui'),('bur','mur'),('jae','mur'),('gui', 'mur'),
 ('gui','gua'),('mur','gua'),('mur','vall'),('mur','tol'),('mur','can'),('gua','vall'),('gua','ter'),('gua','ast'),('vall','ast'),('vall','can'),
 ('ast','ter'),('ast','seg'),('ast','hues'),('ast','bad'),('ast','lug'),('ter','sor'),('ter','seg'),('sor','seg'),('seg','hues'),('seg','nav'),
 ('hues','bad'),('sor','nav'),('hues','nav'),('hues','ali'),('nav','mal'),('nav','ali'),('ali','mal'),('ali','tar'),('mal','tar'),('tar','ore'),
@@ -41,14 +44,40 @@ neighbours = [('leo','zam'),('leo','jae'),('zam','jae'),('zam','bur'),('bur','ja
 ('zar','cas'),('cas','cor'),('las','mad'),('las','vale'),('las','san'),('san','vale'),('san','viz'),('mad','vale'),('vale','viz'),('viz','ala'),
 ('viz','cor'),('cor','ala')]
 
-gr.add_nodes_from(counties)
-gr.add_edges_from(neighbours)
+otheredges = []
+for a, b in edges: 
+	otheredges.append((b,a))
 
+alledges = edges + otheredges
 
+dicti = defaultdict(list)
+for v, k in alledges: 
+	dicti[v].append(k)
+
+nocolor = []
+
+for node in nodes:
+	neighbours = dicti[node]
+	col = ['b','g','r','y', '#FF0099', '#AA0099', '#DD4477']
+	counter = 0
+	for n in neighbours: 
+		if gr.node[node]['color'] == gr.node[n]['color']:
+			counter += 1
+	gr.node[node]['color'] = col[counter]
+	nocolor.append(gr.node[node]['color'])
+
+print nocolor
+
+#gr.add_nodes_from(counties)
+gr.add_edges_from(edges)
 
 nx.draw(gr,pos)
-#nx.draw_networkx_labels(gr,pos,labels)
+node_labels = nx.get_node_attributes(gr,'name')
+# node_colors = nx.get_node_attributes(gr, 'color')
+
+nx.draw_networkx_nodes(gr, pos, nodes, node_color = nocolor)
+
+nx.draw_networkx_labels(gr, pos, labels = node_labels)
+
 plt.savefig("simple_path.png") # save as png
 plt.show() # display
-
-print counties[:10]
