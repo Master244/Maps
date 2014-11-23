@@ -4,33 +4,22 @@ from collections import defaultdict
 
 gr = nx.Graph()
 
-counties = ['leo', 'zam', 'jae', 'bur', 'gui', 'mur', 'gua', 'vall', 'ast', 
-'ter', 'sor', 'seg', 'hues', 'nav', 'mal', 'tar', 'ler', 'lar', 'tol', 'can', 'bad', 'ali',
-'ore', 'pon', 'ciu', 'lug', 'huel', 'gra', 'lac', 'sal', 'bar', 'cad', 'sev', 
-'ger', 'mad', 'vale', 'viz', 'ala', 'alm', 'bal', 'las', 'san', 'cor', 'cac',
-'alb', 'zar', 'cas']
+# Het invoer werk eerst
 
+# Posities van deze provincies in een grid. 
 position = [(1,7),(1,6),(2,7),(2,6),(3,7),(3,6),(4,7),(4,6),(5,6),(5,7),(6,7),
 (6,6.5),(6,6),(7,6),(8,6),(9,6),(10,5.5),(11,6),(3,5),(4,5),(5.5,5),(7,5),(9,5),
 (3,4),(4,4),(4.5,4.5),(4.5,3.5),(5.5,4),(6.5,4),(8,4),(3,3),(5,3),(7,3),(8,3),(3,2),
 (5,2),(7,2),(8,2),(3,1),(4,1),(5,1),(6,1),(7,1),(4,0),(5,0),(6,0),(7,0)]
 
+# Lijst van alle provincies, die de nodes vormen in de graaf
 nodes = ['leo', 'zam', 'jae', 'bur', 'gui', 'mur', 'gua', 'vall', 'ast', 
 'ter', 'sor', 'seg', 'hues', 'nav', 'mal', 'tar', 'ler', 'lar', 'tol', 'can', 'bad', 'ali',
 'ore', 'pon', 'ciu', 'lug', 'huel', 'gra', 'lac', 'sal', 'bar', 'cad', 'sev', 
 'ger', 'mad', 'vale', 'viz', 'ala', 'alm', 'bal', 'las', 'san', 'cor', 'cac',
 'alb', 'zar', 'cas']
 
-colors = ['b','g','r','y', '#660099', '#AA8899', '#DD4477', '#0000AA', '#222222']
-count = 0
-for node in nodes:
-	gr.add_node(node, name = counties[count], color = colors[0])
-	count += 1
-
-
-pos = dict(zip(counties, position))
-
-
+# Provincies die een grens delen krijgen een edge toebedeeld in onderstaande lijst
 edges = [('leo','zam'),('leo','jae'),('zam','jae'),('zam','bur'),('bur','jae'),('jae','gui'),('bur','mur'),('jae','mur'),('gui', 'mur'),
 ('gui','gua'),('mur','gua'),('mur','vall'),('mur','tol'),('mur','can'),('gua','vall'),('gua','ter'),('gua','ast'),('vall','ast'),('vall','can'),
 ('ast','ter'),('ast','seg'),('ast','hues'),('ast','bad'),('ast','lug'),('ter','sor'),('ter','seg'),('sor','seg'),('seg','hues'),('seg','nav'),
@@ -44,36 +33,68 @@ edges = [('leo','zam'),('leo','jae'),('zam','jae'),('zam','bur'),('bur','jae'),(
 ('zar','cas'),('cas','cor'),('las','mad'),('las','vale'),('las','san'),('san','vale'),('san','viz'),('mad','vale'),('vale','viz'),('viz','ala'),
 ('viz','cor'),('cor','ala')]
 
+# De zelfde edges, maar dan andere kant op (dus ook ('zam', 'leo') ipv ('leo','zam'))
 otheredges = []
 for a, b in edges: 
 	otheredges.append((b,a))
 
+# Alle edges bij elkaar gevoegd in 1 lijst
 alledges = edges + otheredges
 
+# Een dictionary met als key een provincie en als value alle provincies waar de key een grens mee deelt
 dicti = defaultdict(list)
 for v, k in alledges: 
 	dicti[v].append(k)
 
+# Lijst van (random) kleuren
+colors = ['g','b','r','y', '#660099', '#AA8899', '#DD4477', '#0000AA', '#222222']
+
+# Labelen van de nodes
+count = 0
+for node in nodes:
+	gr.add_node(node, name = nodes[count], color = colors[0])
+	count += 1
+
+# Posities van de nodes gekoppeld in een dictionary
+pos = dict(zip(nodes, position))
+
+# De lijst van kleuren die mee wordt gegeven bij het tekenen van de graaf
 nocolor = []
 
+'''
+Het kleur bepalen, dat werkt nu als volgt: 
+In het begin heeft elke node de kleur groen. Vervolgens wordt er per node gecheckt of er collisions zijn. 
+De eerste for loop itereert over alle nodes. De tweede for loop loopt door de lijst van buren en checkt of 
+een buur dezelfde kleur heeft. Zo ja, dan wordt counter groter waardoor er later een andere kleur uit de 
+kleurlijst wordt gekozen voor de node. Als er een collision is dan breakt de for loop en zorgt de while loop 
+ervoor dat alle buren weer van voor af aan gecontroleerd worden op kleur. Als er geen collisions zijn, 
+regelt de tweede if statement dat de while loop niet infinite is. 
+Uiteindelijk wordt er een kleur (afhankelijk van het aantal botsingen en dus van counter) toegekend aan 
+een node en die kleur wordt vastgelegd in een lange lijst die wordt gebruikt bij het maken van de graaf. 
+That's it that's all, folks! 
+'''
 for node in nodes:
 	neighbours = dicti[node]
-	col = ['b','g','r','y', '#FF0099', '#AA0099', '#DD4477']
+	col = ['g','b','r','y', '#FF0099', '#AA0099', '#DD4477']
+	cst = 0
 	counter = 0
-	for n in neighbours: 
-		if gr.node[node]['color'] == gr.node[n]['color']:
-			counter += 1
-	gr.node[node]['color'] = col[counter]
+	while cst == 0:
+		x = 0
+		for n in neighbours: 
+			x += 1
+			if gr.node[node]['color'] == gr.node[n]['color']:
+				counter += 1
+				break
+			if x == len(neighbours): 
+				cst = 1
+		gr.node[node]['color'] = col[counter]
 	nocolor.append(gr.node[node]['color'])
 
-print nocolor
-
-#gr.add_nodes_from(counties)
+# Het tekenen van de graaf (met labeling en kleur)
 gr.add_edges_from(edges)
 
 nx.draw(gr,pos)
 node_labels = nx.get_node_attributes(gr,'name')
-# node_colors = nx.get_node_attributes(gr, 'color')
 
 nx.draw_networkx_nodes(gr, pos, nodes, node_color = nocolor)
 
