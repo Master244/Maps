@@ -1,6 +1,7 @@
 import networkx as nx 
 import matplotlib.pyplot as plt
 from collections import defaultdict
+import random
 
 gr = nx.Graph()
 
@@ -73,22 +74,30 @@ Uiteindelijk wordt er een kleur (afhankelijk van het aantal botsingen en dus van
 een node en die kleur wordt vastgelegd in een lange lijst die wordt gebruikt bij het maken van de graaf. 
 That's it that's all, folks! 
 '''
-for node in nodes:
-	neighbours = dicti[node]
-	col = ['g','b','r','y', '#FF0099', '#AA0099', '#DD4477']
-	cst = 0
-	counter = 0
-	while cst == 0:
-		x = 0
-		for n in neighbours: 
-			x += 1
-			if gr.node[node]['color'] == gr.node[n]['color']:
-				counter += 1
-				break
-			if x == len(neighbours): 
-				cst = 1
-		gr.node[node]['color'] = col[counter]
-	nocolor.append(gr.node[node]['color'])
+loops = 0
+numcol = []
+while loops < 1:
+	
+	for node in nodes:
+		neighbours = dicti[node]
+		col = ['g','b','r','y', '#FF0099', '#AA9999', '#DD4477']
+		cst = 0
+		counter = 0
+		while cst == 0:
+			x = 0
+			for n in neighbours: 
+				x += 1
+				if gr.node[node]['color'] == gr.node[n]['color']:
+					counter += 1
+					break
+				if x == len(neighbours): 
+					cst = 1
+			gr.node[node]['color'] = col[counter]
+		nocolor.append(gr.node[node]['color'])
+	numcol.append(len(set(nocolor)))
+	loops+=1
+
+print dicti
 
 # Het tekenen van de graaf (met labeling en kleur)
 gr.add_edges_from(edges)
