@@ -48,7 +48,7 @@ for v, k in alledges:
 	dicti[v].append(k)
 
 # Lijst van (random) kleuren
-colors = ['g','b','r','y', '#660099', '#AA8899', '#DD4477', '#0000AA', '#222222']
+colors = ['#000000','g','b','r','y', '#660099', '#AA8899', '#DD4477', '#0000AA', '#222222']
 
 # Labelen van de nodes
 count = 0
@@ -85,6 +85,8 @@ while loops < 1:
 		counter = 0
 		while cst == 0:
 			x = 0
+			if gr.node[node]['color'] == '#000000':
+				gr.node[node]['color'] = col[0]
 			for n in neighbours: 
 				x += 1
 				if gr.node[node]['color'] == gr.node[n]['color']:
@@ -96,8 +98,6 @@ while loops < 1:
 		nocolor.append(gr.node[node]['color'])
 	numcol.append(len(set(nocolor)))
 	loops+=1
-
-print dicti
 
 # Het tekenen van de graaf (met labeling en kleur)
 gr.add_edges_from(edges)
