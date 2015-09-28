@@ -1,0 +1,87 @@
+/**
+ * importer.less
+ *
+ * By default, new Sails projects are configured to compile this file
+ * from LESS to CSS.  Unlike CSS files, LESS files are not compiled and
+ * included automatically unless they are imported below.
+ *
+ * The LESS files imported below are compiled and included in the order
+ * they are listed.  Mixins, variables, etc. should be imported first
+ * so that they can be accessed by subsequent LESS stylesheets.
+ *
+ * (Just like the rest of the asset pipeline bundled in Sails, you can
+ * always omit, customize, or replace this behavior with SASS, SCSS,
+ * or any other Grunt tasks you like.)
+ */
+
+
+
+// For example:
+//
+// @import 'variables/colors.less';
+// @import 'mixins/foo.less';
+// @import 'mixins/bar.less';
+// @import 'mixins/baz.less';
+//
+// @import 'styleguide.less';
+// @import 'pages/login.less';
+// @import 'pages/signup.less';
+//
+// etc.
+
+@white: #FFFFFF;
+@green: #9EC03B;
+@orange: #F48744;
+@blue: #189ECA;
+@gray: #777574;
+@lightGray: #ececec;
+@black: #1C1C1C;
+@darkBlue: #106E8D;
+@darkgray: #4A4A4A;
+@red: #D16565;
+
+.app-wrapper {
+  text-align: center;
+  .btn {
+    background: #004C00;
+    color: #eee;
+    &:hover {
+      color: #FFF;
+    }
+  }
+  .jumbotron h2 {
+    font-size: 2rem;
+    letter-spacing: -1px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: normal;
+    color: gray;
+  }
+}
+
+.content {
+  margin-top: 6rem;
+}
+
+.form-signin {
+  max-width: 30%;
+  padding: 19px 20px 29px;
+  margin: 0 auto 20px;
+  margin-top: 20px;
+  background-color: @lightGray;
+  border: 1px solid @green;
+  border-radius: 15px;
+  h2 {
+    text-align: center;
+    margin-top: 0px;
+  }
+
+}
+
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+  font-size: 1.5rem;
+  height: auto;
+  margin-bottom: 15px;
+  padding: 7px 9px;
+}

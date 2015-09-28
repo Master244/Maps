@@ -1,0 +1,23 @@
+
+<h1>User signup form</h1>
+
+<form class="form-signin" action="/user/create" method="post">
+  <h2 class="form-signin-heading">Create an account</h2>
+
+  <% if(flash && flash.err) { %>
+    <ul> class="alert alert-success">
+      <% Object.keys(flash.err).forEach(function(error) { %>
+        <li><%- JSON.stringify(flash.err[error]) %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <input type="text" class="form-control" name="name" placeholder="Your name">
+  <input type="text" class="form-control" name="title" placeholder="Your title">
+  <input type="text" class="form-control" name="email" placeholder="Your email">
+  <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+  <input type="password" class="form-control" name="confirmation" placeholder="Password Confirmation">
+  <br>
+  <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create account"/>
+  <input type="hidden" name="_csrf" value="<%= _csrf %>"/>
+</form>
