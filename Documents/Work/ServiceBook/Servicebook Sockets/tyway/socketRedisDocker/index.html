@@ -1,0 +1,19 @@
+<html>
+<head></head>
+
+<body>
+  <div id="message"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io('http://192.168.99.100:3001');
+
+    socket.emit("notification-channel", "notification-1");
+
+    socket.on('notification', function(msg){
+      document.getElementById("message").innerHTML = msg + "<br />" + document.getElementById("message").innerHTML;
+    });
+
+  </script>
+</body>
+</html>

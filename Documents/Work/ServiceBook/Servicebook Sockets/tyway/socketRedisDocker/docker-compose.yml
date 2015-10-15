@@ -1,0 +1,27 @@
+redis:
+  image: redis
+
+socket:
+  build: .
+  command: node server.js
+  ports:
+    - 3001:3001
+  links:
+    - redis
+  environment:
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+
+test:
+  build: .
+  command: node test-client.js
+
+  links:
+    - redis
+
+  ports:
+    - 8000:8000
+
+  environment:
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
